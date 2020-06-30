@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 #define OK F("200#")
-#define NOK F("400#")
+#define NOK F("404#")
 
 class Pipe
 {
@@ -11,36 +11,29 @@ public:
 	Pipe(Stream *serialPtr);
 	void setBoundary(char initiator, char terminator);
 
+	int getOpcode();
 	void send(const char *data);
+	void send(uint8_t opCode, const char *data);
 	char *read(char *dataPtr);
 
-	bool sendNAck(const char *data);
-	char *readNAck(char *dataPtr);
+	bool sendWithAck(const char *data);
+	char *readWithAck(char *dataPtr);
 
 	int waitForAck();
 	void ack();
 	void noAck();
-	// void sendAck(const __FlashStringHelper *msg);
-	
-
-	// bool sendAck(const char *data);
-	
-
-
-	int available();
-	bool discardUntil(char terminator);
-	char *readUntil(char *buffer,char terminator);
-	int getOpcode();
 	
 private:
 	Stream *serial;
 	int _ackTimeout = 2000;
 
 	long _last_millis;
-	int _last_len;
-	uint8_t _serialAvailCounter;
 	char _initiator = '$';
 	char _terminator = '#';
+
+	int _available();
+	char *readUntil(char *buffer,char terminator);
+	bool _discardUntil(char terminator);
 	void _bufferClear();
 	int _timedRead();
 };

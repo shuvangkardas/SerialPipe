@@ -6,6 +6,12 @@ Pipe::Pipe(Stream *serialPtr)
 	serial = serialPtr;
 }
 
+void Pipe::setBoundary(char initiator, char terminator)
+{
+	_initiator = initiator;
+	_terminator = terminator;
+}
+
 int Pipe::_timedRead()
 {
 	int c;
@@ -60,7 +66,7 @@ void Pipe::_bufferClear()
 	}
 }
 
-int Pipe::available()
+int Pipe::_available()
 {
 	int len = serial -> available();
 	if(len > 0)
@@ -92,7 +98,7 @@ int Pipe::available()
 	// return -1;
 }
 
-bool Pipe::discardUntil(char terminator)
+bool Pipe::_discardUntil(char terminator)
 {
 	int c = 0;
 	do
@@ -110,10 +116,10 @@ bool Pipe::discardUntil(char terminator)
 
 int Pipe::getOpcode()
 {
-	int length = available();
+	int length = _available();
 	if(length > 0)
 	{
-		bool firstChar = discardUntil(_initiator);
+		bool firstChar = _discardUntil(_initiator);
 		if(firstChar)
 		{
 			char opStr[6];
@@ -130,6 +136,22 @@ int Pipe::getOpcode()
 void Pipe::send(const char *data)
 {
 	serial -> print(data);
+}
+
+void Pipe::send(uint8_t opCode, const char *data)
+{
+	char temp[6];
+	char *p = temp;
+	*p++ = _initiator;
+	itoa(opCode,p,10);
+	uint8_t len = strlen(p);
+	p = p+len;
+	*p++ = '=';
+	*p = '\0';
+	// Serial.print("Test str: "); Serial.println(temp);
+	serial -> write(temp);
+	serial -> write(data);
+	serial -> print('#');
 }
 
 char *Pipe::read(char *dataPtr)
@@ -173,14 +195,14 @@ int Pipe::waitForAck()
 }
 
 
-bool Pipe::sendNAck(const char *data)
+bool Pipe::sendWithAck(const char *data)
 {
 	serial -> print(data);
 	int code = waitForAck();
 }
 
 
-char *Pipe::readNAck(char *dataPtr)
+char *Pipe::readWithAck(char *dataPtr)
 {
 	char *ptr = dataPtr;
 	readUntil(ptr,_terminator);
