@@ -18,6 +18,7 @@ void loop()
   int opCode = pipe.getOpcode();
   if (opCode > 0)
   {
+    Serial.println(F("<---------------Receiving--------------->"));
     Serial.print(F("opcode: ")); Serial.println(opCode);
     Serial.println(pipe.read(buf));
     pipe.ack();
