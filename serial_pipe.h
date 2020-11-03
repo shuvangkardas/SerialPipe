@@ -16,6 +16,7 @@ public:
 	void send(uint8_t opCode, const char *data);
 	void send(uint8_t opCode, uint32_t data);
 	char *read(char *dataPtr);
+	void query(uint8_t opCode, char *buf);
 
 	bool sendWithAck(const char *data);
 	char *readWithAck(char *dataPtr);
@@ -39,6 +40,6 @@ private:
 	bool _discardUntil(char terminator);
 	void _bufferClear();
 	int _timedRead();
-	void _sendHeader(uint8_t opcode);
+	void _sendHeader(uint8_t opCode);
 };
 #endif

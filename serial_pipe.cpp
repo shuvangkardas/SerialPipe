@@ -1,5 +1,6 @@
 #include "serial_pipe.h"
 
+#define QUERY_TIMEOUT 2000
 
 Pipe::Pipe(Stream *serialPtr)
 {
@@ -143,7 +144,7 @@ void Pipe::send(const char *data)
 	serial -> print(data);
 }
 
-void Pipe::_sendHeader(uint8_t opcode)
+void Pipe::_sendHeader(uint8_t opCode)
 {
 	char temp[6];
 	char *p = temp;
@@ -175,7 +176,7 @@ void Pipe::send(uint8_t opCode, const char *data)
 void Pipe::send(uint8_t opCode, uint32_t data)
 {
 	_sendHeader(opCode);
-	serial -> write(data);
+	serial -> print(data);
 	serial -> print('#');
 }
 
@@ -185,6 +186,21 @@ char *Pipe::read(char *dataPtr)
 	_bufferClear();
 	return ptr;
 	// return dataPtr;
+}
+
+void Pipe::query(uint8_t opCode, char *buf)
+{
+	_sendHeader(opCode);
+	int timeOut = QUERY_TIMEOUT;
+	int retCode;
+	do
+	{
+		retCode = getOpcode();
+		delay(1);
+		Serial.print(F("Code : "));Serial.println(retCode);
+	}while(!(retCode == opCode) && --timeOut);
+	char *p = read(buf);
+	// Serial.println(p);
 }
 
 // void Pipe::sendAck(const __FlashStringHelper *msg)
