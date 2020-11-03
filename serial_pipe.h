@@ -14,6 +14,7 @@ public:
 	int getOpcode();
 	void send(const char *data);
 	void send(uint8_t opCode, const char *data);
+	void send(uint8_t opCode, uint32_t data);
 	char *read(char *dataPtr);
 
 	bool sendWithAck(const char *data);
@@ -22,6 +23,8 @@ public:
 	int waitForAck();
 	void ack();
 	void noAck();
+
+	void setAckTimeout(int time);
 	
 private:
 	Stream *serial;
@@ -36,5 +39,6 @@ private:
 	bool _discardUntil(char terminator);
 	void _bufferClear();
 	int _timedRead();
+	void _sendHeader(uint8_t opcode);
 };
 #endif

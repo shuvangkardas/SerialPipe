@@ -12,6 +12,11 @@ void Pipe::setBoundary(char initiator, char terminator)
 	_terminator = terminator;
 }
 
+void Pipe::setAckTimeout(int time)
+{
+	_ackTimeout = time;
+}
+
 int Pipe::_timedRead()
 {
 	int c;
@@ -138,7 +143,7 @@ void Pipe::send(const char *data)
 	serial -> print(data);
 }
 
-void Pipe::send(uint8_t opCode, const char *data)
+void Pipe::_sendHeader(uint8_t opcode)
 {
 	char temp[6];
 	char *p = temp;
@@ -148,16 +153,37 @@ void Pipe::send(uint8_t opCode, const char *data)
 	p = p+len;
 	*p++ = '=';
 	*p = '\0';
-	// Serial.print("Test str: "); Serial.println(temp);
 	serial -> write(temp);
+}
+
+void Pipe::send(uint8_t opCode, const char *data)
+{
+	// char temp[6];
+	// char *p = temp;
+	// *p++ = _initiator;
+	// itoa(opCode,p,10);
+	// uint8_t len = strlen(p);
+	// p = p+len;
+	// *p++ = '=';
+	// *p = '\0';
+	// // Serial.print("Test str: "); Serial.println(temp);
+	// serial -> write(temp);
+	_sendHeader(opCode);
+	serial -> write(data);
+	serial -> print('#');
+}
+void Pipe::send(uint8_t opCode, uint32_t data)
+{
+	_sendHeader(opCode);
 	serial -> write(data);
 	serial -> print('#');
 }
 
 char *Pipe::read(char *dataPtr)
 {
-	char *ptr = dataPtr;
-	return readUntil(ptr,_terminator);//This ensures teminated properly
+	char *ptr = readUntil(dataPtr,_terminator);
+	_bufferClear();
+	return ptr;
 	// return dataPtr;
 }
 
