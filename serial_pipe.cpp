@@ -188,7 +188,7 @@ char *Pipe::read(char *dataPtr)
 	// return dataPtr;
 }
 
-void Pipe::query(uint8_t opCode, char *buf)
+char *Pipe::query(uint8_t opCode, char *buf)
 {
 	_sendHeader(opCode);
 	int timeOut = QUERY_TIMEOUT;
@@ -200,7 +200,7 @@ void Pipe::query(uint8_t opCode, char *buf)
 		Serial.print(F("Code : "));Serial.println(retCode);
 	}while(!(retCode == opCode) && --timeOut);
 	char *p = read(buf);
-	// Serial.println(p);
+	return p;
 }
 
 // void Pipe::sendAck(const __FlashStringHelper *msg)

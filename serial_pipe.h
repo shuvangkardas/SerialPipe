@@ -16,7 +16,7 @@ public:
 	void send(uint8_t opCode, const char *data);
 	void send(uint8_t opCode, uint32_t data);
 	char *read(char *dataPtr);
-	void query(uint8_t opCode, char *buf);
+	char *query(uint8_t opCode, char *buf);
 
 	bool sendWithAck(const char *data);
 	char *readWithAck(char *dataPtr);
