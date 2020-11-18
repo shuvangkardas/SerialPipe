@@ -1,6 +1,6 @@
 #include "serial_pipe.h"
 
-#define QUERY_TIMEOUT 2000
+#define QUERY_TIMEOUT 1000
 
 Pipe::Pipe(Stream *serialPtr)
 {
@@ -190,6 +190,7 @@ char *Pipe::read(char *dataPtr)
 
 char *Pipe::query(uint8_t opCode, char *buf)
 {
+	Serial.print(F("Pipe Query opCode : "));Serial.println(opCode);
 	_sendHeader(opCode);
 	int timeOut = QUERY_TIMEOUT;
 	int retCode;
@@ -197,7 +198,7 @@ char *Pipe::query(uint8_t opCode, char *buf)
 	{
 		retCode = getOpcode();
 		delay(1);
-		Serial.print(F("Code : "));Serial.println(retCode);
+		// Serial.print(F("Code : "));Serial.println(retCode);
 	}while(!(retCode == opCode) && --timeOut);
 	char *p = read(buf);
 	return p;
