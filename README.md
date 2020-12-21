@@ -1,5 +1,12 @@
 # SerialPipe
 
+<!-- Badges -->
+[![Build Status][build-shield]][build-url]
+[![GitHub release][release-shield]][release-url]
+[![GitHub commits][commits-shield]][commits-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
 ## Bidrectional peer to peer library 
 This is a simple bidirectional communication library in between two microcontrollers. So, the main advantage of the library is that any microcontroller can send  data to other microcontroller like `send(opcode,data)` and the other microcontroller send acknowledge if data packet is valid.  Depending on the opcode the microcontroller can interprete the data and performs different actions. 
 
@@ -31,3 +38,23 @@ if (opCode > 0)
 ## Library Tested with
 - Arduino Uno to Arduino Uno
 - Arduino Uno to ESP8266
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[build-shield]: https://travis-ci.com/shuvangkar/SerialPipe.svg?branch=master
+[build-url]: https://travis-ci.com/github/shuvangkar/SerialPipe
+
+[release-shield]: https://img.shields.io/github/release/shuvangkar/SerialPipe.svg
+[release-url]: https://github.com/shuvangkar/SerialPipe
+
+[commits-shield]: https://img.shields.io/github/commits-since/shuvangkar/SerialPipe/v0.1.0
+[commits-url]: https://img.shields.io/github/commits-since/shuvangkar/SerialPipe/v0.1.0
+
+
+[license-shield]: https://img.shields.io/github/license/shuvangkar/SerialPipe
+[license-url]: https://github.com/shuvangkar/SIM800L/blob/master/LICENSE.txt
+
+
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/shuvangkar
