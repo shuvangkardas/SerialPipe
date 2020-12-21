@@ -28,6 +28,6 @@ if (opCode > 0)
     }
 }
 ```
-## Testing 
-- Arduino UNO to Arduino Uno Tested
-- Arduino Uno to ESP8266 Tested
+## Library Tested with
+- Arduino Uno to Arduino Uno
+- Arduino Uno to ESP8266
