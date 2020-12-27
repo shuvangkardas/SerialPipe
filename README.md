@@ -35,6 +35,11 @@ if (opCode > 0)
     }
 }
 ```
+
+## Internal Library Opcode
+The user cannot use opcode 0 to 9 for normal transaction. These opcodes are used by internal library 
+- 1 ->  for connection check 
+
 ## Library Tested with
 - Arduino Uno to Arduino Uno
 - Arduino Uno to ESP8266

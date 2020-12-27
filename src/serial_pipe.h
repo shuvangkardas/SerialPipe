@@ -26,6 +26,7 @@ public:
 	void noAck();
 
 	void setAckTimeout(int time);
+	bool isConnected();
 	
 private:
 	Stream *serial;
@@ -41,5 +42,6 @@ private:
 	void _bufferClear();
 	int _timedRead();
 	void _sendHeader(uint8_t opCode);
+	void _handleInternalOpcode(uint8_t opCode);
 };
 #endif

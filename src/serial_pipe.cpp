@@ -2,6 +2,10 @@
 
 #define QUERY_TIMEOUT 1000
 
+#define LIBRARY_MAX_OPCODE_NUM 9
+#define OPCODE_CONNECTED 1
+
+
 Pipe::Pipe(Stream *serialPtr)
 {
 	serial = serialPtr;
@@ -132,11 +136,29 @@ int Pipe::getOpcode()
 			char *ptr = readUntil(opStr,'=');
 			// Serial.print("op: ");Serial.println(ptr);
 			int opcode = atoi(ptr);
+			if(opcode <= LIBRARY_MAX_OPCODE_NUM)
+			{
+				_handleInternalOpcode(opcode);
+				return 0;
+			}
 			return opcode;
 		}
 	}
 	return -1;
 
+}
+
+void Pipe::_handleInternalOpcode(uint8_t opCode)
+{
+	switch(opCode)
+	{
+		case OPCODE_CONNECTED:
+			// delay(5000);
+			ack();// send ack for connected
+		break;
+		default:
+		break;
+	}
 }
 
 void Pipe::send(const char *data)
@@ -202,6 +224,21 @@ char *Pipe::query(uint8_t opCode, char *buf)
 	}while(!(retCode == opCode) && --timeOut);
 	char *p = read(buf);
 	return p;
+}
+
+bool Pipe::isConnected()
+{
+	_sendHeader(1);
+	return (waitForAck() == 200);
+	// if(waitForAck() == 200)
+	// {
+	// 	Serial.println(F("---->PIPE connected"));
+	// }
+	// else
+	// {
+	// 	Serial.println(F("---->Pipe not connected"));
+	// }
+	
 }
 
 // void Pipe::sendAck(const __FlashStringHelper *msg)
