@@ -228,7 +228,7 @@ char *Pipe::query(uint8_t opCode, char *buf)
 
 bool Pipe::isConnected()
 {
-	_sendHeader(1);
+	_sendHeader(OPCODE_CONNECTED);
 	return (waitForAck() == 200);
 	// if(waitForAck() == 200)
 	// {
