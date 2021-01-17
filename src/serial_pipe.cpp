@@ -270,7 +270,7 @@ int Pipe::waitForAck()
 		}
 		delay(1);
 	}
-	// Serial.println(F("Timeout"));
+	Serial.println(F("Pipe Wait Timeout"));
 	return -1;
 }
 
