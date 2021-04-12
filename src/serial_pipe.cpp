@@ -212,7 +212,7 @@ char *Pipe::read(char *dataPtr)
 
 char *Pipe::query(uint8_t opCode, char *buf)
 {
-	Serial.print(F("Pipe Query opCode : "));Serial.println(opCode);
+	// Serial.print(F("Pipe Query opCode : "));Serial.println(opCode);
 	_sendHeader(opCode);
 	int timeOut = QUERY_TIMEOUT;
 	int retCode;
