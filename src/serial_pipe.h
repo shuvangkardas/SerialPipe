@@ -30,7 +30,7 @@ public:
 	
 private:
 	Stream *serial;
-	int _ackTimeout = 2000;
+	int _ackTimeout = 1000;
 
 	long _last_millis;
 	char _initiator = '$';
