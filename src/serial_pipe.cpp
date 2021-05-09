@@ -26,6 +26,7 @@ int Pipe::_timedRead()
 {
 	int c;
 	_last_millis = millis();
+	uint32_t nowMs;
 	do
 	{
 		c = serial -> read();
@@ -33,7 +34,9 @@ int Pipe::_timedRead()
 		{
 			return c;
 		}
-	} while ((millis() - _last_millis) < 1000);
+		nowMs = millis();
+		nowMs = nowMs - _last_millis;
+	} while (nowMs < 1000);
 	return -1;
 }
 
@@ -134,10 +137,11 @@ int Pipe::getOpcode()
 		{
 			char opStr[6];
 			char *ptr = readUntil(opStr,'=');
-			// Serial.print("op: ");Serial.println(ptr);
+			// Serial.print(F("op: "));Serial.println(ptr);
 			int opcode = atoi(ptr);
 			if(opcode <= LIBRARY_MAX_OPCODE_NUM)
 			{
+				Serial.println(F("<Pipe Internal OPC>"));
 				_handleInternalOpcode(opcode);
 				return 0;
 			}
